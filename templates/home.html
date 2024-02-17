@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}The Modern Menagerie{% endblock %}
+
+{% block content %}
+<h1>Our Pets</h1>
+<div class="container text-center">
+    <div class="row row-cols-3">
+        {% for pet in pets %}
+        <div class="col">
+            <img src="{{pet.photo_url}}" alt="{{pet.name}} picture" class="img-thumbnail rounded border-black border-3">
+            <br>
+            <span class="fs-3"><a href="/{{pet.id}}">{{pet.name}}</a> is 
+                {% if pet.available == True %}
+                <b>AVAILABLE</b>.
+                {% else %}
+                not available.
+                {% endif %}
+            </span>
+            <br>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
