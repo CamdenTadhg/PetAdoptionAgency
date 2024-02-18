@@ -8,6 +8,7 @@
     <img src="{{pet.photo_url}}" alt="picture of {{pet.name}}" class="img-thumbnail rounded border-black border-3">
     <p class="fs-3">Species: {{pet.species}}</p>
     <form id="pet-editform" method="POST">
+        {{form.hidden_tag()}}
         <p class="mb-3">
             {{form.photo_url.label(class_="form-label")}}
             {{form.photo_url(class_="form-control")}}

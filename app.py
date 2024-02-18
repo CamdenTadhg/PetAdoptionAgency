@@ -47,30 +47,31 @@ def add_pet():
     else:
         return render_template("pet_add_form.html", form=form)
 
-@app.route("/<int:pet_id_number>")
+@app.route("/<int:pet_id_number>", methods=["GET"])
 def show_pet(pet_id_number):
     """show pet details"""
 
     pet = Pet.query.get_or_404(pet_id_number)
     return render_template("pet_details.html", pet=pet)
 
-@app.route("/<int:pet_id_number>/edit")
+@app.route("/<int:pet_id_number>/edit", methods=["GET", "POST"])
 def edit_pet(pet_id_number):
     """form for editing pet; editing handler"""
 
     pet = Pet.query.get_or_404(pet_id_number)
-    form = EditPetForm()
+    form = EditPetForm(obj=pet)
 
     if form.validate_on_submit():
-        photo_url = form.photo_url.data
-        age = form.age.data
-        notes = form.notes.data
-        available = form.available.data
+        pet.photo_url = form.photo_url.data
+        pet.age = form.age.data
+        pet.notes = form.notes.data
+        pet.available = form.available.data
+        db.session.commit()
+        flash(f"Pet {pet.name} updated!")
         return redirect(f"/{pet.id}")
     else:
         return render_template("pet_edit_form.html", pet=pet, form=form)
 
-# 9 handle edit form
 # 8 refactor your code
 # 7 add flash for feedback after adding or editing
 # 6 divide the homepage into available and no-longer-available
