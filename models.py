@@ -17,7 +17,7 @@ class Pet(db.Model):
     photo_url = db.Column(db.String(200))
     age = db.Column(db.Integer)
     notes = db.Column(db.Text)
-    available = db.Column(db.Boolean, nullable=False, default="available")
+    available = db.Column(db.Boolean, nullable=False, default=True)
 
     def __repr__(self):
         """show info about the pet"""

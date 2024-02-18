@@ -73,8 +73,11 @@ def edit_pet(pet_id_number):
     else:
         return render_template("pet_edit_form.html", pet=pet, form=form)
 
-# 5 add testing for all
-# 4 add Bootstrap and a simple theme
+
+# 4 add testing for all
+    # why isn't my default value working? 
+    # why isn't my test database being used? 
+    # why are my other tests failing? 
 # 3 reduce duplication by using Jinja2's "include" directive and factor out common code
 # 2 instantiate the pet more diretly using the dictionary of values
 # 1 add a new field for a photo upload to save to the /static directory; only one of the photo fields can be filled out (use validation)
