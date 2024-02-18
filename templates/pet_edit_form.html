@@ -1,31 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Add Pet Form{% endblock %}
+{% block title %}Edit {{pet.name}}{% endblock %}
 
 {% block content %}
-<div class="container-sm">
-
-    <h1>New Pet</h1>
-    <form id="pet-add-form" method="POST">
-        {{form.hidden_tag()}}
-        <p class="mb-3">
-            {{form.name.label(class_="form-label")}}
-            {{form.name(class_="form-control")}}
-            <span class="text-danger">
-                {% for error in form.name.errors %}
-                    {{error}}
-                {% endfor %}
-            </span>
-        </p>
-        <p class="mb-3">
-            {{form.species.label(class_="form-label")}}
-            {{form.species(class_="form-control")}}
-            <span class="text-danger">
-                {% for error in form.species.errors %}
-                    {{error}}
-                {% endfor %}
-            </span>
-        </p>
+<div class="container">
+    <h1>{{pet.name}}</h1>
+    <img src="{{pet.photo_url}}" alt="picture of {{pet.name}}" class="img-thumbnail rounded border-black border-3">
+    <p class="fs-3">Species: {{pet.species}}</p>
+    <form id="pet-editform" method="POST">
         <p class="mb-3">
             {{form.photo_url.label(class_="form-label")}}
             {{form.photo_url(class_="form-control")}}
@@ -62,7 +44,7 @@
                 {% endfor %}
             </span>
         </p>
-        <button type="submit" class="btn btn-primary">Add Pet</button>
+        <button class="btn btn-primary">Save</button>
     </form>
 </div>
 {% endblock %}

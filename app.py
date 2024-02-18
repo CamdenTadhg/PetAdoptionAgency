@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, flash
 from models import db, connect_db, Pet
-from forms import AddPetForm
+from forms import AddPetForm, EditPetForm
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, BooleanField, TextAreaField
 from flask_debugtoolbar import DebugToolbarExtension
@@ -39,14 +39,37 @@ def add_pet():
         age = form.age.data
         notes = form.notes.data
         available = form.available.data
+        pet = Pet(name=name, species=species, photo_url=photo_url, age=age, notes=notes, available=available)
+        db.session.add(pet)
+        db.session.commit()
         flash(f"Added {name}, the {species}")
-        return redirect("/add")
+        return redirect("/")
     else:
         return render_template("pet_add_form.html", form=form)
 
-# 12 create handler for add pet form
-# 11 add validation
-# 10 add display/edit form
+@app.route("/<int:pet_id_number>")
+def show_pet(pet_id_number):
+    """show pet details"""
+
+    pet = Pet.query.get_or_404(pet_id_number)
+    return render_template("pet_details.html", pet=pet)
+
+@app.route("/<int:pet_id_number>/edit")
+def edit_pet(pet_id_number):
+    """form for editing pet; editing handler"""
+
+    pet = Pet.query.get_or_404(pet_id_number)
+    form = EditPetForm()
+
+    if form.validate_on_submit():
+        photo_url = form.photo_url.data
+        age = form.age.data
+        notes = form.notes.data
+        available = form.available.data
+        return redirect(f"/{pet.id}")
+    else:
+        return render_template("pet_edit_form.html", pet=pet, form=form)
+
 # 9 handle edit form
 # 8 refactor your code
 # 7 add flash for feedback after adding or editing
