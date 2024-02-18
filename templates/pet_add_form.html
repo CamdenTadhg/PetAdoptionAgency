@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Pet Form{% endblock %}
+
+{% block content %}
+<div class="container-sm">
+    <h1>New Pet</h1>
+    <form id="pet-add-form" method="POST">
+        {{form.hidden_tag()}}
+        <p class="mb-3">
+            {{form.name.label(class_="form-label")}}
+            {{form.name(class_="form-control")}}
+            {% for error in form.name.errors %}
+                {{error(class_="fs-6")}}
+            {% endfor %}
+        </p>
+        <p class="mb-3">
+            {{form.species.label(class_="form-label")}}
+            {{form.species(class_="form-control")}}
+            {% for error in form.species.errors %}
+                {{error(class_="fs-6")}}
+            {% endfor %}
+        </p>
+        <p class="mb-3">
+            {{form.photo_url.label(class_="form-label")}}
+            {{form.photo_url(class_="form-control")}}
+            {% for error in form.photo_url.errors %}
+                {{error(class_="fs-6")}}
+            {% endfor %}
+        </p>
+        <p class="mb-3">
+            {{form.age.label(class_="form-label")}}
+            {{form.age(class_="form-control")}}
+            {% for error in form.age.errors %}
+                {{error(class_="fs-6")}}
+            {% endfor %}
+        </p>
+        <p class="mb-3">
+            {{form.notes.label(class_="form-label")}}
+            {{form.notes(class_="form-control")}}
+            {% for error in form.notes.errors %}
+                {{error(class_="fs-6")}}
+            {% endfor %}
+        </p>
+        <p class="mb-3">
+            {{form.available.label(class_="form-label")}}
+            {{form.available}}
+            {% for error in form.available.errors %}
+                {{error(class_="fs-6")}}
+            {% endfor %}
+        </p>
+        <button type="submit" class="btn btn-primary">Add Pet</button>
+    </form>
+</div>
+{% endblock %}

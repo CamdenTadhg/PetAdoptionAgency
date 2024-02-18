@@ -1,5 +1,8 @@
 from flask import Flask, request, render_template, redirect, flash
 from models import db, connect_db, Pet
+from forms import AddPetForm
+from flask_wtf import FlaskForm
+from wtforms import StringField, IntegerField, BooleanField, TextAreaField
 from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
@@ -23,8 +26,24 @@ def show_home_page():
     pets = db.session.execute(db.select(Pet).order_by(Pet.name)).scalars()
     return render_template("home.html", pets=pets)
 
-# 14 create homepage
-# 13 create add pet form
+@app.route("/add", methods=["GET", "POST"])
+def add_pet():
+    """form for adding pet; adding handler"""
+
+    form = AddPetForm()
+
+    if form.validate_on_submit():
+        name = form.name.data
+        species = form.species.data
+        photo_url = form.photo_url.data
+        age = form.age.data
+        notes = form.notes.data
+        available = form.available.data
+        flash(f"Added {name}, the {species}")
+        return redirect("/add")
+    else:
+        return render_template("pet_add_form.html", form=form)
+
 # 12 create handler for add pet form
 # 11 add validation
 # 10 add display/edit form

@@ -7,9 +7,12 @@
     <title>{% block title %} {% endblock %}</title>
 </head>
 <body>
-    <div class="navbar bg-body-tertiary, mx=5">
-        <a href="/">The Modern Menagerie</a>
-    </div>
+    <nav class="navbar bg-body-tertiary, mx=5">
+        <div class="container-fluid">
+            <a href="/" class="navbar-brand">The Modern Menagerie</a>
+            <a href="/add" class="btn btn-success">Add Pet</a>
+        </div>
+    </nav>
     {% block content %}
     {% endblock %}
 </body>
