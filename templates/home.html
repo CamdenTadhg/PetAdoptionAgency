@@ -9,17 +9,22 @@
 {% endfor %}
 <div class="container text-center">
     <div class="row row-cols-3">
-        {% for pet in pets %}
+        {% for pet in available_pets %}
         <div class="col">
             <img src="{{pet.photo_url}}" alt="{{pet.name}} picture" class="img-thumbnail rounded border-black border-3">
             <br>
-            <span class="fs-3"><a href="/{{pet.id}}">{{pet.name}}</a> is 
-                {% if pet.available == True %}
-                <b>AVAILABLE</b>.
-                {% else %}
-                not available.
-                {% endif %}
-            </span>
+            <span class="fs-3"><a href="/{{pet.id}}">{{pet.name}}</a> is <b>AVAILABLE</b>.</span>
+            <br>
+        </div>
+        {% endfor %}
+    </div>
+    <hr class="border border-black border-3 opacity-100">
+    <div class="row row-cols-3">
+        {% for pet in unavailable_pets %}
+        <div class="col">
+            <img src="{{pet.photo_url}}" alt="{{pet.name}} picture" class="img-thumbnail rounded border-black border-3">
+            <br>
+            <span class="fs-3"><a href="/{{pet.id}}">{{pet.name}}</a> is unavailable.</span>
             <br>
         </div>
         {% endfor %}

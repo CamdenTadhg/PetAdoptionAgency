@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, flash
+from flask import Flask, render_template, redirect, flash
 from models import db, connect_db, Pet
 from forms import AddPetForm, EditPetForm
 from flask_wtf import FlaskForm
@@ -23,8 +23,9 @@ db.create_all()
 @app.route('/')
 def show_home_page():
     """home page displaying available pets"""
-    pets = db.session.execute(db.select(Pet).order_by(Pet.name)).scalars()
-    return render_template("home.html", pets=pets)
+    available_pets = db.session.execute(db.select(Pet).where(Pet.available == True).order_by(Pet.name)).scalars()
+    unavailable_pets = db.session.execute(db.select(Pet).where(Pet.available == False).order_by(Pet.name)).scalars()
+    return render_template("home.html", available_pets=available_pets, unavailable_pets=unavailable_pets)
 
 @app.route("/add", methods=["GET", "POST"])
 def add_pet():
@@ -72,11 +73,8 @@ def edit_pet(pet_id_number):
     else:
         return render_template("pet_edit_form.html", pet=pet, form=form)
 
-# 8 refactor your code
-# 7 add flash for feedback after adding or editing
-# 6 divide the homepage into available and no-longer-available
 # 5 add testing for all
 # 4 add Bootstrap and a simple theme
 # 3 reduce duplication by using Jinja2's "include" directive and factor out common code
 # 2 instantiate the pet more diretly using the dictionary of values
-# 1 add a new field for a photo upload to save to the /static directory; only one of the photo field can be filled out (use validation)
+# 1 add a new field for a photo upload to save to the /static directory; only one of the photo fields can be filled out (use validation)
