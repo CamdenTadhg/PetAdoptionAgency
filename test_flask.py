@@ -2,18 +2,16 @@ from unittest import TestCase
 from app import app
 from models import db, Pet
 
-
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///petagency_test'
+app.config['SQLALCHEMY_ECHO'] = False
+app.config['TESTING']=True
+app.config['WTF_CSRF_ENABLED']=False
 
 db.drop_all()
 db.create_all()
 
 class PetAgencyTestCase(TestCase):
     """Tests for view functions for Pet Agency site"""
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///petagency_test'
-    app.config['SQLALCHEMY_ECHO'] = False
-    app.config['TESTING']=True
-    app.config['WTF_CSRF_ENABLED']=False
 
     def setUp(self):
         """Add sample pet"""

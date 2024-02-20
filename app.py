@@ -5,6 +5,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, BooleanField, TextAreaField
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy import exc
+from werkzeug.utils import secure_filename
+from flask_wtf.file import FileField, FileAllowed
 
 app = Flask(__name__)
 
@@ -36,7 +38,7 @@ def add_pet():
 
     if form.validate_on_submit():
         labels = ['name', 'species', 'photo_url', 'age', 'notes', 'available']
-        data = { l:v for (l, v) in zip(labels, form.data.values())}
+        data = {l:v for (l, v) in zip(labels, form.data.values())}
         pet = Pet(**data)
         try:
             db.session.add(pet)
@@ -76,8 +78,12 @@ def edit_pet(pet_id_number):
         return render_template("pet_edit_form.html", pet=pet, form=form)
 
 
-# 2 add a new field for a photo upload to save to the /static directory; only one of the photo fields can be filled out (use validation)
+
 # 1 add testing for all
     # why isn't my test database being used? 
     # why isn't my default value working? 
     # why are my other tests failing? 
+# 2 add a new field for a photo upload to save to the /static directory; only one of the photo fields can be filled out (use validation)
+    # process uploaded photo to save to a file path
+    # insert filepath appropriately into pet instance
+    # ensure only one of the two image fields can be completed
