@@ -4,6 +4,7 @@ from forms import AddPetForm, EditPetForm
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, BooleanField, TextAreaField
 from flask_debugtoolbar import DebugToolbarExtension
+from sqlalchemy import exc
 
 app = Flask(__name__)
 
@@ -37,9 +38,14 @@ def add_pet():
         labels = ['name', 'species', 'photo_url', 'age', 'notes', 'available']
         data = { l:v for (l, v) in zip(labels, form.data.values())}
         pet = Pet(**data)
-        db.session.add(pet)
-        db.session.commit()
-        flash(f"Added {form.name.data}, the {form.species.data}")
+        try:
+            db.session.add(pet)
+            db.session.commit()
+            flash(f"Added {form.name.data}, the {form.species.data}")
+        except exc.IntegrityError:
+            db.session.rollback()
+            flash(f'{form.name.data}, the {form.species.data} is already in the system')
+            return render_template("pet_add_form.html", form=form)
         return redirect("/")
     else:
         return render_template("pet_add_form.html", form=form)
@@ -70,9 +76,8 @@ def edit_pet(pet_id_number):
         return render_template("pet_edit_form.html", pet=pet, form=form)
 
 
-# 2 instantiate the pet more directly using the dictionary of values
-# 1 add a new field for a photo upload to save to the /static directory; only one of the photo fields can be filled out (use validation)
-# 4 add testing for all
+# 2 add a new field for a photo upload to save to the /static directory; only one of the photo fields can be filled out (use validation)
+# 1 add testing for all
     # why isn't my test database being used? 
     # why isn't my default value working? 
     # why are my other tests failing? 
