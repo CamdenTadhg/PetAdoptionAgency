@@ -1,23 +1,27 @@
-from flask import Flask, render_template, redirect, flash
+from flask import Flask, render_template, redirect, flash, request
 from models import db, connect_db, Pet
 from forms import AddPetForm, EditPetForm
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, BooleanField, TextAreaField
+from wtforms import StringField, IntegerField, BooleanField, TextAreaField, FileField
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy import exc
 from werkzeug.utils import secure_filename
 from flask_wtf.file import FileField, FileAllowed
+import os
 
 app = Flask(__name__)
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///petagency'
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# app.config['SQLALCHEMY_ECHO'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///petagency_test'
-app.config['SQLALCHEMY_ECHO'] = False
-app.config['TESTING']=True
+UPLOAD_FOLDER='/static'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///petagency'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = True
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///petagency_test'
+# app.config['SQLALCHEMY_ECHO'] = False
+# app.config['TESTING']=True
 app.config['SECRET_KEY'] = "secret"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 debug=DebugToolbarExtension(app)
 
@@ -40,7 +44,12 @@ def add_pet():
     form = AddPetForm()
 
     if form.validate_on_submit():
-        labels = ['name', 'species', 'photo_url', 'age', 'notes', 'available']
+        if form.photo_file.data:
+            file = form.photo_file.data
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(UPLOAD_FOLDER, filename))
+            form.photo_file.data = f'/{UPLOAD_FOLDER}/{filename}'
+        labels = ['name', 'species', 'photo_url', 'photo_file', 'age', 'notes', 'available']
         data = {l:v for (l, v) in zip(labels, form.data.values())}
         pet = Pet(**data)
         try:
@@ -83,7 +92,6 @@ def edit_pet(pet_id_number):
 
 
 # 1 add a new field for a photo upload to save to the /static directory; only one of the photo fields can be filled out (use validation)
-    # enter file upload field into form and display appropriately
     # process uploaded photo to save to a file path
     # insert filepath appropriately into pet instance and database
     # ensure only one of the two image fields can be completed

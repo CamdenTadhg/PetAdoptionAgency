@@ -11,7 +11,12 @@
     <div class="row row-cols-3">
         {% for pet in available_pets %}
         <div class="col">
+            {% if pet.photo_url %}
             <img src="{{pet.photo_url}}" alt="{{pet.name}} picture" class="img-thumbnail rounded border-black border-3">
+            {% endif %}
+            {% if pet.photo_file %}
+            <img src="{{pet.photo_file}}" alt="{{pet.name}} picture" class="img-thumbnail rounded border-black border-3">
+            {% endif %}
             <br>
             <span class="fs-3"><a href="/{{pet.id}}">{{pet.name}}</a> is <b>AVAILABLE</b>.</span>
             <br>

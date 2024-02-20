@@ -8,6 +8,15 @@
     </span>
 </p>
 <p class="mb-3">
+    {{form.photo_file.label(class_="form-label")}}
+    {{form.photo_file(class_="form-control")}}
+    <span class="text-danger">
+        {% for error in form.photo_file.errors %}
+            {{error}}
+        {% endfor %}
+    </span>
+</p>
+<p class="mb-3">
     {{form.age.label(class_="form-label")}}
     {{form.age(class_="form-control")}}
     <span class="text-danger">
