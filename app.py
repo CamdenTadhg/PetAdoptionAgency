@@ -11,7 +11,7 @@ import os
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER='/static'
+UPLOAD_FOLDER=os.path.join(app.root_path, 'static')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///petagency'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -48,7 +48,7 @@ def add_pet():
             file = form.photo_file.data
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
-            form.photo_file.data = f'/{UPLOAD_FOLDER}/{filename}'
+            form.photo_file.data = f'/static/{filename}'
         labels = ['name', 'species', 'photo_url', 'photo_file', 'age', 'notes', 'available']
         data = {l:v for (l, v) in zip(labels, form.data.values())}
         pet = Pet(**data)
@@ -88,10 +88,3 @@ def edit_pet(pet_id_number):
         return redirect(f"/{pet.id}")
     else:
         return render_template("pet_edit_form.html", pet=pet, form=form)
-
-
-
-# 1 add a new field for a photo upload to save to the /static directory; only one of the photo fields can be filled out (use validation)
-    # process uploaded photo to save to a file path
-    # insert filepath appropriately into pet instance and database
-    # ensure only one of the two image fields can be completed

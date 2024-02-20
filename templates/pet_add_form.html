@@ -9,7 +9,7 @@
     {% for msg in get_flashed_messages() %}
         <p class="fs-5 text-danger">{{msg}}</p>
     {% endfor %}
-    <form id="pet-add-form" method="POST">
+    <form id="pet-add-form" method="POST" enctype="multipart/form-data">
         {{form.hidden_tag()}}
         <p class="mb-3">
             {{form.name.label(class_="form-label")}}

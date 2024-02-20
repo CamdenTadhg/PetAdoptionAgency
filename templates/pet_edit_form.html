@@ -12,7 +12,7 @@
     <img src="{{pet.photo_file}}" alt="picture of {{pet.name}}" class="img-thumbnail rounded border-black border-3">
     {% endif %}
     <p class="fs-3">Species: {{pet.species}}</p>
-    <form id="pet-editform" method="POST">
+    <form id="pet-editform" method="POST" enctype="multipart/form-data">
         {{form.hidden_tag()}}
         {% include 'form_template.html' %}
         <button class="btn btn-primary">Save</button>
