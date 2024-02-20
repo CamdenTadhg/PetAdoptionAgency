@@ -10,9 +10,12 @@ from flask_wtf.file import FileField, FileAllowed
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///petagency'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///petagency'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_ECHO'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///petagency_test'
+app.config['SQLALCHEMY_ECHO'] = False
+app.config['TESTING']=True
 app.config['SECRET_KEY'] = "secret"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
@@ -79,11 +82,8 @@ def edit_pet(pet_id_number):
 
 
 
-# 1 add testing for all
-    # why isn't my test database being used? 
-    # why isn't my default value working? 
-    # why are my other tests failing? 
-# 2 add a new field for a photo upload to save to the /static directory; only one of the photo fields can be filled out (use validation)
+# 1 add a new field for a photo upload to save to the /static directory; only one of the photo fields can be filled out (use validation)
+    # enter file upload field into form and display appropriately
     # process uploaded photo to save to a file path
-    # insert filepath appropriately into pet instance
+    # insert filepath appropriately into pet instance and database
     # ensure only one of the two image fields can be completed

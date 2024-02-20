@@ -18,7 +18,7 @@ class Pet(db.Model):
     photo_url = db.Column(db.String(200))
     age = db.Column(db.Integer)
     notes = db.Column(db.Text)
-    available = db.Column(db.Boolean, nullable=False, default=True)
+    available = db.Column(db.Boolean, nullable=False, server_default='True')
     UniqueConstraint(name, species)
 
     def __repr__(self):

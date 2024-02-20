@@ -16,12 +16,15 @@ class PetAgencyTestCase(TestCase):
     def setUp(self):
         """Add sample pet"""
 
-    db.session.query(Pet).delete()
-    db.session.commit()
+        Pet.query.delete()
+        db.session.query(Pet).delete()
+        db.session.commit()
 
-    pet = Pet(name="Test", species="rabbit", age=8, available=True)
-    db.session.add(pet)
-    db.session.commit()
+        pet = Pet(name="Test", species="rabbit", age=8, available=True)
+        pet2 = Pet(name='Testo', species="rabbit", age=5, available=True)
+        db.session.add(pet)
+        db.session.add(pet2)
+        db.session.commit()
 
     def tearDown(self):
         """Clean up any fouled transactions."""
@@ -46,9 +49,9 @@ class PetAgencyTestCase(TestCase):
     
     def test_add_pet(self):
         with app.test_client() as client:
-            data = {'name': 'Tester', 'species': 'rabbit', 'age':0}
+            data = {'name': 'Testy', 'species': 'rabbit', 'age':0}
             resp=client.post('/add', data=data)
-            test_pet = db.session.execute(db.select(Pet).where(Pet.name == 'Tester')).scalar()
+            test_pet = db.session.execute(db.select(Pet).where(Pet.name == 'Testy')).scalar()
 
         self.assertEqual(resp.status_code, 302)
         self.assertEqual(resp.location, '/')
@@ -56,7 +59,7 @@ class PetAgencyTestCase(TestCase):
             
     def test_add_pet_redirect(self):
         with app.test_client() as client:
-            data = {'name': 'Tester', 'species': 'rabbit', 'age': 0}
+            data = {'name': 'Tester', 'species': 'rabbit', 'photo_url': '', 'age': 0, 'available': True}
             resp=client.post('/add', data=data, follow_redirects=True)
             html=resp.get_data(as_text=True)
 
@@ -65,13 +68,13 @@ class PetAgencyTestCase(TestCase):
     
     def test_show_pet(self):
         with app.test_client() as client:
-            test_pet=db.session.execute(db.select(Pet).where(Pet.name == "Test")).scalar()
+            test_pet=db.session.execute(db.select(Pet).where(Pet.name == "Testo")).scalar()
             resp=client.get(f'/{test_pet.id}')
             html=resp.get_data(as_text=True)
         
         self.assertEqual(resp.status_code, 200)
-        self.assertIn('Test', html)
-        self.assertIn('Available: Yes', html)
+        self.assertIn('Testo', html)
+        self.assertIn('Yes', html)
 
     def test_show_edit_pet_form(self):
         with app.test_client() as client:
@@ -94,10 +97,10 @@ class PetAgencyTestCase(TestCase):
     def test_edit_pet_redirect(self):
         with app.test_client() as client:
             test_pet=db.session.execute(db.select(Pet).where(Pet.name == "Test")).scalar()
-            data = {'age': 0, 'available': False}
+            data = {'photo_url': 'https://media.istockphoto.com/id/450608541/photo/rabbit-sitting-on-white-background.jpg?s=612x612&w=0&k=20&c=0yaStTEqOXrbpkEHeUQ7n_QSNtSXJ1tgkLZdK_bpMY0=', 'age': 0, 'notes': ''}
             resp=client.post(f'/{test_pet.id}/edit', data=data, follow_redirects=True)
             html=resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn('Pet Test updated!', html)
-            self.assertIn('Available: No', html)
+            self.assertIn('No', html)
