@@ -2123,7 +2123,7 @@ progress {
 .form-control {
   display: block;
   width: 100%;
-  padding: 1rem 0;
+  padding: 0.5 rem 0.5 rem;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -2133,7 +2133,7 @@ progress {
   appearance: none;
   background-color: transparent;
   background-clip: padding-box;
-  border: 0 solid transparent;
+  border: 0.25 solid transparent;
   border-radius: 0;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }

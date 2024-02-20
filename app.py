@@ -34,16 +34,12 @@ def add_pet():
     form = AddPetForm()
 
     if form.validate_on_submit():
-        name = form.name.data
-        species = form.species.data
-        photo_url = form.photo_url.data
-        age = form.age.data
-        notes = form.notes.data
-        available = form.available.data
-        pet = Pet(name=name, species=species, photo_url=photo_url, age=age, notes=notes, available=available)
+        labels = ['name', 'species', 'photo_url', 'age', 'notes', 'available']
+        data = { l:v for (l, v) in zip(labels, form.data.values())}
+        pet = Pet(**data)
         db.session.add(pet)
         db.session.commit()
-        flash(f"Added {name}, the {species}")
+        flash(f"Added {form.name.data}, the {form.species.data}")
         return redirect("/")
     else:
         return render_template("pet_add_form.html", form=form)
@@ -74,10 +70,9 @@ def edit_pet(pet_id_number):
         return render_template("pet_edit_form.html", pet=pet, form=form)
 
 
-# 4 add testing for all
-    # why isn't my default value working? 
-    # why isn't my test database being used? 
-    # why are my other tests failing? 
-# 3 reduce duplication by using Jinja2's "include" directive and factor out common code
-# 2 instantiate the pet more diretly using the dictionary of values
+# 2 instantiate the pet more directly using the dictionary of values
 # 1 add a new field for a photo upload to save to the /static directory; only one of the photo fields can be filled out (use validation)
+# 4 add testing for all
+    # why isn't my test database being used? 
+    # why isn't my default value working? 
+    # why are my other tests failing? 

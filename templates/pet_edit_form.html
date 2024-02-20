@@ -9,42 +9,7 @@
     <p class="fs-3">Species: {{pet.species}}</p>
     <form id="pet-editform" method="POST">
         {{form.hidden_tag()}}
-        <p class="mb-3">
-            {{form.photo_url.label(class_="form-label")}}
-            {{form.photo_url(class_="form-control")}}
-            <span class="text-danger">
-                {% for error in form.photo_url.errors %}
-                    {{error}}
-                {% endfor %}
-            </span>
-        </p>
-        <p class="mb-3">
-            {{form.age.label(class_="form-label")}}
-            {{form.age(class_="form-control")}}
-            <span class="text-danger">
-                {% for error in form.age.errors %}
-                    {{error}}
-                {% endfor %}
-            </span>
-        </p>
-        <p class="mb-3">
-            {{form.notes.label(class_="form-label")}}
-            {{form.notes(class_="form-control")}}
-            <span class="text-danger">
-                {% for error in form.notes.errors %}
-                    {{error}}
-                {% endfor %}
-            </span>
-        </p>
-        <p class="mb-3">
-            {{form.available.label(class_="form-label")}}
-            {{form.available}}
-            <span class="text-danger">
-                {% for error in form.available.errors %}
-                    {{error}}
-                {% endfor %}
-            </span>
-        </p>
+        {% include 'form_template.html' %}
         <button class="btn btn-primary">Save</button>
     </form>
 </div>
